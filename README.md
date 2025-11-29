@@ -4,7 +4,7 @@
 
 ## Демо
 
-Netlify: https://gorgeous-zuccutto-778bcd.netlify.app/
+Netlify: https://celebrated-vacherin-a6dbb2.netlify.app/
 
 ## Дизайн
 
@@ -52,15 +52,15 @@ npm install
 
 ## Страницы
 
-- [Главная (навигация)](https://gorgeous-zuccutto-778bcd.netlify.app/)
-- [Авторизация](https://gorgeous-zuccutto-778bcd.netlify.app/pages/login/)
-- [Регистрация](https://gorgeous-zuccutto-778bcd.netlify.app/pages/register/)
-- [Чаты](https://gorgeous-zuccutto-778bcd.netlify.app/pages/chats/)
-- [Настройки профиля](https://gorgeous-zuccutto-778bcd.netlify.app/pages/settings/)
-- [Редактирование профиля](https://gorgeous-zuccutto-778bcd.netlify.app/pages/settings-edit/)
-- [Изменение пароля](https://gorgeous-zuccutto-778bcd.netlify.app/pages/settings-password/)
-- [404](https://gorgeous-zuccutto-778bcd.netlify.app/pages/404/)
-- [500](https://gorgeous-zuccutto-778bcd.netlify.app/pages/500/)
+- [Главная (навигация)](https://celebrated-vacherin-a6dbb2.netlify.app/)
+- [Авторизация](https://celebrated-vacherin-a6dbb2.netlify.app/pages/login/)
+- [Регистрация](https://celebrated-vacherin-a6dbb2.netlify.app/pages/register/)
+- [Чаты](https://celebrated-vacherin-a6dbb2.netlify.app/pages/chats/)
+- [Настройки профиля](https://celebrated-vacherin-a6dbb2.netlify.app/pages/settings/)
+- [Редактирование профиля](https://celebrated-vacherin-a6dbb2.netlify.app/pages/settings-edit/)
+- [Изменение пароля](https://celebrated-vacherin-a6dbb2.netlify.app/pages/settings-password/)
+- [404](https://celebrated-vacherin-a6dbb2.netlify.app/pages/404/)
+- [500](https://celebrated-vacherin-a6dbb2.netlify.app/pages/500/)
 
 ## Структура проекта
 
