@@ -1,4 +1,4 @@
-@import './variables.css';
+@import url('./variables.css');
 
 .layout-auth {
   min-height: 100vh;
@@ -253,7 +253,7 @@
 
 .message-text {
   color: var(--color-text-primary);
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .message-time {
@@ -371,7 +371,7 @@
 .settings-avatar-overlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -398,7 +398,9 @@
 }
 
 .settings-section {
-  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .settings-actions {

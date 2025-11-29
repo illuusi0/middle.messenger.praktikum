@@ -10,16 +10,35 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite build && vite preview --port 3000"
+    "start": "vite build && vite preview --port 3000",
+    "lint": "npm run lint:ts && npm run lint:eslint && npm run lint:stylelint",
+    "lint:ts": "tsc --noEmit",
+    "lint:eslint": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint \"src/**/*.{ts,tsx}\"",
+    "lint:stylelint": "stylelint \"src/**/*.css\"",
+    "lint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint \"src/**/*.{ts,tsx}\" --fix",
+    "stylelint": "stylelint \"src/**/*.css\"",
+    "stylelint:fix": "stylelint \"src/**/*.css\" --fix"
   },
   "dependencies": {
     "handlebars": "^4.7.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/handlebars": "^4.0.40",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
     "autoprefixer": "^10.4.22",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.1",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "postcss-nested": "^7.0.2",
-    "vite": "^7.1.7"
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^7.1.7",
+    "vite-plugin-handlebars": "^2.0.0"
   }
 }

@@ -1,4 +1,4 @@
-@import './variables.css';
+@import url('./variables.css');
 
 .icon {
   width: 24px;
@@ -47,7 +47,7 @@
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(42, 171, 238, 0.2);
+  box-shadow: 0 0 0 2px rgb(42 171 238 / 20%);
 }
 
 .input:hover:not(:focus) {
@@ -109,7 +109,7 @@
 }
 
 .button--secondary:hover {
-  background-color: rgba(42, 171, 238, 0.1);
+  background-color: rgb(42 171 238 / 10%);
 }
 
 .button--danger {
@@ -118,7 +118,7 @@
 }
 
 .button--danger:hover {
-  background-color: rgba(229, 57, 53, 0.1);
+  background-color: rgb(229 57 53 / 10%);
 }
 
 .button--full {
