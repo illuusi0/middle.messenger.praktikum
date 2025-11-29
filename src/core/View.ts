@@ -1,8 +1,7 @@
-import { Block } from './Block';
-import { Props } from './Block';
+import { Block, Props } from './Block';
 
-export class View extends Block {
-  constructor(props: Props = {}) {
+export class View<P extends Props = Props> extends Block<P> {
+  constructor(props: P = {} as P) {
     super(props);
   }
 

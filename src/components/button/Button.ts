@@ -9,7 +9,7 @@ export interface ButtonProps extends Props {
   events?: Record<string, (e: Event) => void>;
 }
 
-export class Button extends Block {
+export class Button extends Block<ButtonProps> {
   constructor(props: ButtonProps) {
     super(props);
   }

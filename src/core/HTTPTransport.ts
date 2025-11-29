@@ -16,6 +16,15 @@ type RequestOptions = {
 
 type QueryParams = Record<string, string | number>;
 
+type Options = {
+  data?: unknown;
+  headers?: Record<string, string>;
+  timeout?: number;
+  queryParams?: QueryParams;
+};
+
+type HTTPMethodType = <R = unknown>(url: string, options?: Options) => Promise<R>;
+
 export class HTTPTransport {
   private baseURL: string;
 
@@ -23,27 +32,35 @@ export class HTTPTransport {
     this.baseURL = baseURL;
   }
 
-  get(url: string, queryParams?: QueryParams): Promise<XMLHttpRequest> {
+  get: HTTPMethodType = (url, options = {}) => {
+    const { queryParams, ...restOptions } = options;
     const fullUrl = queryParams
       ? `${url}?${this.buildQueryString(queryParams)}`
       : url;
-    return this.request(fullUrl, { method: HTTPMethod.GET });
-  }
+    return this.request(fullUrl, { ...restOptions, method: HTTPMethod.GET }, options.timeout);
+  };
 
-  post(url: string, data?: unknown): Promise<XMLHttpRequest> {
-    return this.request(url, { method: HTTPMethod.POST, data });
-  }
+  post: HTTPMethodType = (url, options = {}) => {
+    const { queryParams, ...restOptions } = options;
+    void queryParams;
+    return this.request(url, { ...restOptions, method: HTTPMethod.POST }, options.timeout);
+  };
 
-  put(url: string, data?: unknown): Promise<XMLHttpRequest> {
-    return this.request(url, { method: HTTPMethod.PUT, data });
-  }
+  put: HTTPMethodType = (url, options = {}) => {
+    const { queryParams, ...restOptions } = options;
+    void queryParams;
+    return this.request(url, { ...restOptions, method: HTTPMethod.PUT }, options.timeout);
+  };
 
-  delete(url: string, data?: unknown): Promise<XMLHttpRequest> {
-    return this.request(url, { method: HTTPMethod.DELETE, data });
-  }
+  delete: HTTPMethodType = (url, options = {}) => {
+    const { queryParams, ...restOptions } = options;
+    void queryParams;
+    return this.request(url, { ...restOptions, method: HTTPMethod.DELETE }, options.timeout);
+  };
 
-  private request(url: string, options: RequestOptions): Promise<XMLHttpRequest> {
-    const { method, data, headers = {}, timeout = DEFAULT_TIMEOUT } = options;
+  private request<R = unknown>(url: string, options: RequestOptions, timeoutOverride?: number): Promise<R> {
+    const { method, data, headers = {}, timeout: optionsTimeout } = options;
+    const timeout = timeoutOverride ?? optionsTimeout ?? DEFAULT_TIMEOUT;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -59,7 +76,12 @@ export class HTTPTransport {
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(xhr);
+          try {
+            const response = xhr.responseText ? JSON.parse(xhr.responseText) : xhr.responseText;
+            resolve(response as R);
+          } catch {
+            resolve(xhr as unknown as R);
+          }
         } else {
           reject(new Error(`HTTP Error: ${xhr.status} ${xhr.statusText}`));
         }

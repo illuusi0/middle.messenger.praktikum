@@ -2,7 +2,7 @@ import { EventBus } from './EventBus';
 
 export type Props = Record<string, unknown>;
 
-export class Block {
+export abstract class Block<Props extends Record<string, unknown> = Record<string, unknown>> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -13,9 +13,9 @@ export class Block {
   protected eventBus: EventBus;
   private _element: HTMLElement | null = null;
   protected props: Props;
-  protected children: Record<string, Block>;
+  protected children: Record<string, Block<Record<string, unknown>>>;
 
-  constructor(props: Props = {}) {
+  constructor(props: Props = {} as Props) {
     const eventBus = new EventBus();
     this.props = this._makePropsProxy(props);
     this.children = {};
@@ -32,12 +32,12 @@ export class Block {
   }
 
   private _makePropsProxy(props: Props): Props {
-    return new Proxy(props, {
+    return new Proxy(props as Record<string, unknown>, {
       get: (target, prop: string) => {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set: (target, prop: string, value) => {
+      set: (target, prop: string, value: unknown) => {
         const oldValue = target[prop];
         target[prop] = value;
         this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldValue, value);
@@ -46,7 +46,7 @@ export class Block {
       deleteProperty: () => {
         throw new Error('Нет доступа');
       },
-    });
+    }) as Props;
   }
 
   init(): void {
@@ -78,7 +78,7 @@ export class Block {
     return oldProps !== newProps;
   }
 
-  setProps = (nextProps: Props): void => {
+  setProps = (nextProps: Partial<Props>): void => {
     if (!nextProps) {
       return;
     }

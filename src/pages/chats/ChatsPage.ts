@@ -67,6 +67,14 @@ export class ChatsPage extends View {
     this.validator = new Validator();
     this.initComponents();
 
+    this.setProps({
+      events: {
+        submit: this.handleFormSubmit.bind(this),
+        focusout: this.handleInputFocusOut.bind(this),
+        click: this.handleClick.bind(this),
+      },
+    });
+
     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
   }
 
@@ -171,62 +179,57 @@ export class ChatsPage extends View {
     }
   }
 
-  componentDidMount(): void {
-    const form = this.getContent()?.querySelector('#message-form') as HTMLFormElement;
+  componentDidMount(): void {}
+
+  private handleFormSubmit(e: Event): void {
+    const target = e.target as HTMLElement;
+    const form = target.closest('#message-form') as HTMLFormElement;
+
     if (form) {
-      const messageInput = form.querySelector('input[name="message"]') as HTMLInputElement;
+      e.preventDefault();
+      const formData = new FormData(form);
+      const messageValue = formData.get('message') as string;
 
-      if (messageInput) {
-        messageInput.addEventListener('blur', this.handleMessageBlur.bind(this));
+      const error = this.validator.validateField('message', messageValue);
+      if (error) {
+        return;
       }
 
-      form.addEventListener('submit', this.handleMessageSubmit.bind(this));
-    }
-
-    const burgerBtn = this.getContent()?.querySelector('.burger-btn') as HTMLButtonElement;
-    if (burgerBtn) {
-      burgerBtn.addEventListener('click', () => {
-        const burgerMenu = burgerBtn.parentElement;
-        if (burgerMenu) {
-          burgerMenu.classList.toggle('burger-menu--open');
+      const data: Record<string, string> = {};
+      for (const [key, value] of formData.entries()) {
+        if (typeof value === 'string') {
+          data[key] = value;
         }
-      });
-    }
-
-    document.addEventListener('click', (e) => {
-      const burgerMenu = this.getContent()?.querySelector('.burger-menu');
-      if (burgerMenu && !burgerMenu.contains(e.target as Node)) {
-        burgerMenu.classList.remove('burger-menu--open');
       }
-    });
+
+      console.log('Message form data:', data);
+
+      const messageInput = form.querySelector('input[name="message"]') as HTMLInputElement;
+      if (messageInput) {
+        messageInput.value = '';
+      }
+    }
+  }
+
+  private handleInputFocusOut(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    if (target && target.name === 'message') {
+      this.handleMessageBlur(e);
+    }
   }
 
   private handleMessageBlur(_e: Event): void {
   }
 
-  private handleMessageSubmit(e: Event): void {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const messageValue = formData.get('message') as string;
+  private handleClick(e: Event): void {
+    const target = e.target as HTMLElement;
 
-    const error = this.validator.validateField('message', messageValue);
-    if (error) {
-      return;
-    }
-
-    const data: Record<string, string> = {};
-    for (const [key, value] of formData.entries()) {
-      if (typeof value === 'string') {
-        data[key] = value;
+    const burgerBtn = target.closest('.burger-btn');
+    if (burgerBtn) {
+      const burgerMenu = burgerBtn.parentElement;
+      if (burgerMenu) {
+        burgerMenu.classList.toggle('burger-menu--open');
       }
-    }
-
-    console.log('Message form data:', data);
-
-    const messageInput = form.querySelector('input[name="message"]') as HTMLInputElement;
-    if (messageInput) {
-      messageInput.value = '';
     }
   }
 }

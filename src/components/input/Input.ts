@@ -15,7 +15,7 @@ export interface InputProps extends Props {
   events?: Record<string, (e: Event) => void>;
 }
 
-export class Input extends Block {
+export class Input extends Block<InputProps> {
   constructor(props: InputProps) {
     super(props);
   }
@@ -35,11 +35,11 @@ export class Input extends Block {
   }
 
   setError(error: string): void {
-    this.setProps({ error });
+    this.setProps({ error } as Partial<InputProps>);
   }
 
   clearError(): void {
-    this.setProps({ error: '' });
+    this.setProps({ error: '' } as Partial<InputProps>);
   }
 
   getValue(): string {
